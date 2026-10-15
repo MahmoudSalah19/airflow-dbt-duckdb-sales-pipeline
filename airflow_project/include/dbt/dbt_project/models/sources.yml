@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: sales_crm
+    description: "Raw CRM CSV files loaded by bronze.py"
+    schema: main_bronze
+    tables: 
+      - name: accounts 
+      - name: products 
+      - name: sales_pipeline 
+      - name: sales_team 
+      - name: data_dictionary                         
+
+

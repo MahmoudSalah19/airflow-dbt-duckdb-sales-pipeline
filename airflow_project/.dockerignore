@@ -1,0 +1,13 @@
+astro
+.git
+airflow_settings.yaml
+logs/
+.env
+airflow.db
+airflow.cfg
+.venv
+include/*.duckdb
+__pycache__
+*.pyc
+include/dbt/dbt_project/target
+include/dbt/dbt_project/logs

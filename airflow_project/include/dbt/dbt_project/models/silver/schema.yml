@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: accounts
+    description: "Cleaned account data: company info, industry, establishment year, revenue, employees, office location and parent company."
+    columns:
+      - name: account
+        description: "Company name."
+        data_tests: [unique, not_null]
+      - name: sector
+        description: "Industry sector (spelling corrected, e.g. technolgy -> technology)."
+      - name: year_established
+        description: "Year in which the company was established."
+      - name: revenue
+        description: "Company revenue."
+      - name: employees
+        description: "Number of employees at the company."
+      - name: office_location
+        description: "Country of the company's office."
+      - name: subsidiary_of
+        description: "Parent company name. NULL when the account has no parent."
+
+  - name: products
+    description: "Cleaned product data: names, series and sales prices."
+    columns:
+      - name: product_name
+        description: "Product name."
+        data_tests: [unique, not_null]
+      - name: product_series
+        description: "Product series or family."
+      - name: sales_price
+        description: "Sales price of the product."
+        data_tests: [not_null]
+
+  - name: sales_pipeline
+    description: "Cleaned sales opportunities: agents, products, accounts, deal stages, dates and deal values."
+    columns:
+      - name: opportunity_id
+        description: "Unique identifier of the sales opportunity."
+        data_tests: [unique, not_null]
+      - name: sales_agent
+        description: "Sales agent responsible for the opportunity."
+        data_tests:
+          - relationships:
+              to: ref('sales_team')
+              field: sales_agent
+      - name: product_name
+        description: "Product of the opportunity (names standardized, e.g. GTXPro -> GTX Pro)."
+        data_tests:
+          - relationships:
+              to: ref('products')
+              field: product_name
+      - name: account
+        description: "Company account associated with the opportunity."
+        data_tests:
+          - relationships:
+              to: ref('accounts')
+              field: account
+      - name: deal_stage
+        description: "Current stage or outcome of the opportunity."
+        data_tests:
+          - accepted_values:
+              values: ['Prospecting', 'Engaging', 'Won', 'Lost']
+      - name: engage_date
+        description: "Date the opportunity was engaged."
+      - name: close_date
+        description: "Date the opportunity was closed. NULL for open opportunities."
+      - name: close_value
+        description: "Value of the deal at closing."
+
+  - name: sales_team
+    description: "Cleaned sales team data: agents, their managers and regional offices."
+    columns:
+      - name: sales_agent
+        description: "Sales agent name."
+        data_tests: [unique, not_null]
+      - name: manager
+        description: "Manager of the sales agent."
+      - name: regional_office
+        description: "Regional office of the sales agent."
